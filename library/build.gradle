@@ -1,6 +1,7 @@
 description = 'An easy to use library for using custom font families in your Android applications.'
 
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 24
@@ -30,11 +31,28 @@ task sourcesJar(type: Jar) {
     classifier "sources"
 }
 
+task javadoc(type: Javadoc) {
+    failOnError  false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 task signJars(type: Sign, dependsOn: ['assembleRelease', 'assembleDebug', 'sourcesJar', 'generatePomFileForLibraryPublication']) {
     sign(null, file("$buildDir/outputs/aar/library-release.aar"))
     sign("debug", file("$buildDir/outputs/aar/library-debug.aar"))
     sign("sources", file("$buildDir/libs/library-sources.jar"))
     sign(null, file("$buildDir/publications/library/pom-default.xml"))
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
 }
 
 apply plugin: 'maven-publish'
