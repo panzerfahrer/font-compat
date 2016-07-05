@@ -3,12 +3,12 @@ description = 'An easy to use library for using custom font families in your And
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -22,7 +22,7 @@ android {
 
 dependencies {
     provided project(path: ':mock')
-    compile 'com.android.support:support-annotations:23.2.1'
+    compile 'com.android.support:support-annotations:24.0.0'
 }
 
 task sourcesJar(type: Jar) {
