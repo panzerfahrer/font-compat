@@ -1,10 +1,10 @@
 package com.meetme.support.fonts;
 
-import com.meetme.support.fonts.internal.FontListParser;
-
 import android.annotation.TargetApi;
 import android.graphics.FontFamily;
 import android.util.Log;
+
+import com.meetme.support.fonts.internal.FontListParser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,8 +28,7 @@ class FontManagerImpl24 extends FontManagerImpl21 implements FontManager.FontMan
         for (FontListParser.Font font : family.fonts) {
             if (BuildConfig.DEBUG) Log.v(TAG, "makeFamilyFromParsed: " + font.fontName + ", " + font.weight + ",  " + font.isItalic);
 
-            try {
-                FileInputStream fis = new FileInputStream(font.fontName);
+            try (FileInputStream fis = new FileInputStream(font.fontName)) {
                 FileChannel channel = fis.getChannel();
                 ByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
                 boolean result = fontFamily.addFontWeightStyle(buffer, ttcIndex, Collections.EMPTY_LIST, font.weight, font.isItalic);
